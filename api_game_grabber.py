@@ -183,7 +183,7 @@ MASK_VALUE = len(CHAMPIONS)  # Valeur spéciale pour les slots vides
 
 
 
-API_KEY = "RGAPI-a3876c8c-1bdf-4e0a-a63e-1d9ea5434292"  # Remplacez par votre clé API
+API_KEY = "xxxxxx"  # Remplacez par votre clé API
 BASE_URLS = {
     "EUROPE": "https://europe.api.riotgames.com",
     "EUW1": "https://euw1.api.riotgames.com"
