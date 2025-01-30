@@ -183,7 +183,7 @@ MASK_VALUE = len(CHAMPIONS)  # Valeur spéciale pour les slots vides
 
 
 
-API_KEY = "xxxxxx"  # Remplacez par votre clé API
+API_KEY = "RGAPI-5bdf7895-146f-47a9-ae81-a1ad7463ce8f"  # Remplacez par votre clé API
 BASE_URLS = {
     "EUROPE": "https://europe.api.riotgames.com",
     "EUW1": "https://euw1.api.riotgames.com"
@@ -207,6 +207,11 @@ def get_match_details(match_id):
     
     winner = None
     teams = {}
+
+    if data["info"]["gameMode"] != "CLASSIC":
+        print("aya")
+        return 0
+    
     for team in data["info"]["teams"]:
         if team["teamId"] == 100:
             teams["blue"] = [p["championId"] for p in data["info"]["participants"] if p["teamId"] == 100]
@@ -214,6 +219,7 @@ def get_match_details(match_id):
             teams["red"] = [p["championId"] for p in data["info"]["participants"] if p["teamId"] == 200]
         if team["win"]:
             winner = team["teamId"]
+    
     
     return {
         "winner": winner,
@@ -306,7 +312,13 @@ if __name__ == "__main__":
             for match_id in match_history:
                 if match_id not in existing_matches:
                     match_data = get_match_details(match_id)
+
+                    if match_data == 0:
+                        print("pas classic")
+                        continue
+
                     samples = process_match(match_data, mask_value)
+
                     # print(match_data)
                     # print(samples)
                     # Ajouter les nouveaux échantillons
@@ -314,15 +326,17 @@ if __name__ == "__main__":
                         X_win.append(win)
                         X_lose.append(lose)
                         y.append(target)
-                    
+                        
                     existing_matches.add(match_id)
                     save_data(X_win, X_lose, y, existing_matches, mask_value)
                     print(f"Match {match_id} traité. Échantillons totaux: {len(X_win)}")
                     
                     time.sleep(1.2)  # Respect du rate limit
-
+                else:
+                    print("deja dedans")
+                    time.sleep(1.2)
         except Exception as e:
             print(f"Erreur avec le summoner {entry['summonerId']}: {str(e)}")
-            time.sleep(30)
+            time.sleep(1.2)
 
     print("Collecte terminée !")

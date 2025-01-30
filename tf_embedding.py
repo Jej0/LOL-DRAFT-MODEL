@@ -154,7 +154,7 @@ if __name__ == "__main__":
         class_weight={i: w for i, w in enumerate(class_weights)},
         callbacks=[
             tf.keras.callbacks.ModelCheckpoint(
-                'best_model_HUGE.keras',
+                'best_model_HUGEV3.keras',
                 save_best_only=True,
                 monitor='val_prec@10',  # Focus sur la précision top 10
                 mode='max'
@@ -181,4 +181,4 @@ if __name__ == "__main__":
             optimal_thresholds.append(0.5)  # Valeur par défaut
 
     np.save('model_config_v2.npy', np.array(optimal_thresholds))
-    model.save('final_model_HUGE2.keras')
+    model.save('final_model_HUGEV3.keras')

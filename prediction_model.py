@@ -213,7 +213,7 @@ class DraftAssistant:
     def load_model(self):
         try:
             return tf.keras.models.load_model(
-                'final_model_HUGE2.keras',
+                'final_model_HUGEV3.keras',
                 custom_objects={
                     'AttentionBlock': AttentionBlock,
                     'FocalLoss': keras_cv.losses.FocalLoss
@@ -236,7 +236,7 @@ class DraftAssistant:
             [(i, p) for i, p in enumerate(probs) if idx_to_original_id[i] not in picked],
             key=lambda x: x[1], 
             reverse=True
-        )[:5]
+        )[:20]
 
     def display_recommendations(self, recommendations):
         print("\n" + "═"*50)
