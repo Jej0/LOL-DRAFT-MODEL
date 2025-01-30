@@ -1,0 +1,19 @@
+{
+    "global": {
+      "version_from_match": "25.S1.2",
+      "default_region": "EUW",
+      "data_globals": {
+        "print_calls": false
+      }
+    },
+    "plugins": {
+      "default": {
+        "CassCache": {
+          "expirations": {
+            "Champion": 3600,
+            "Match": 3600
+          }
+        }
+      }
+    }
+  }
