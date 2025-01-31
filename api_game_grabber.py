@@ -183,7 +183,7 @@ MASK_VALUE = len(CHAMPIONS)  # Valeur spéciale pour les slots vides
 
 
 
-API_KEY = "RGAPI-5bdf7895-146f-47a9-ae81-a1ad7463ce8f"  # Remplacez par votre clé API
+API_KEY = "RGAPI-d7455060-a9ef-4999-abc8-96f8bc2d00f5"  # Remplacez par votre clé API
 BASE_URLS = {
     "EUROPE": "https://europe.api.riotgames.com",
     "EUW1": "https://euw1.api.riotgames.com"
@@ -287,13 +287,30 @@ def save_data(X_win, X_lose, y, match_ids, mask_value):
         mask_value=np.array([mask_value])
     )
 
+
+def get_recursive_game(match_id):
+
+    """Récupère les détails du match avec la nouvelle structure"""
+    url = f"{BASE_URLS['EUROPE']}/lol/match/v5/matches/{match_id}"
+    response = requests.get(url, headers={"X-Riot-Token": API_KEY})
+    data = response.json()
+
+    puuids = data["metadata"]["participants"]
+
+    for puuid in puuids:
+        continue
+
+    return
+
+
+
 # Workflow principal
 if __name__ == "__main__":
     X_win, X_lose, y, existing_matches, mask_value = load_existing_data()
     
     # Récupérer les matches de la ligue Challenger
     challenger_league = requests.get(
-        f"{BASE_URLS['EUW1']}/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5",
+        f"{BASE_URLS['EUW1']}/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5",
         headers={"X-Riot-Token": API_KEY}
     ).json()
 
