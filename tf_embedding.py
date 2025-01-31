@@ -6,7 +6,8 @@ from keras_cv.losses import FocalLoss
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_curve
 from tensorflow.keras import saving
-
+from tensorflow.keras.constraints import MaxNorm
+from tensorflow.keras.regularizers import l1_l2
 
 # 1. Charger les données
 data = np.load('lol_draft_data_v2.npz')
@@ -87,18 +88,19 @@ def build_improved_model():
     # Ajout de Dropout plus agressif
     merged = BatchNormalization()(merged)
 
-    x = Dense(512, activation='relu', kernel_regularizer='l2')(merged)  # 512 neurones
-    merged = Dropout(0.6)(merged)
-    
-    # Couches denses révisées
-    x = Dense(256, activation='relu', kernel_initializer='he_normal')(x)
-    x = Dropout(dropout_rate)(x)
-    x = Dense(128, activation='relu', kernel_initializer='he_normal')(x)
-    #x = BatchNormalization()(x)
-    x = Dropout(0.3)(x)
-    x = Dense(64, activation='relu')(x)
+    x = BatchNormalization()(merged)
+    x = Dense(384, activation='swish', kernel_constraint=MaxNorm(3.0))(x)
+    x = Dropout(0.6)(x)
+    x = Dense(192, activation='swish', kernel_regularizer=l1_l2(1e-5, 1e-4))(x)
     x = BatchNormalization()(x)
+    x = Dropout(0.5)(x)
+    x = Dense(96, activation='swish')(x)
+    x = Dropout(0.4)(x)
+    
     output = Dense(n_champions, activation='sigmoid')(x)
+
+    return Model(inputs=[win_input, lose_input], outputs=output)
+
 
     return Model(inputs=[win_input, lose_input], outputs=output)
 
@@ -154,7 +156,7 @@ if __name__ == "__main__":
         class_weight={i: w for i, w in enumerate(class_weights)},
         callbacks=[
             tf.keras.callbacks.ModelCheckpoint(
-                'best_model_HUGEV3.keras',
+                'best_model_HUGEV4.keras',
                 save_best_only=True,
                 monitor='val_prec@10',  # Focus sur la précision top 10
                 mode='max'
@@ -181,4 +183,4 @@ if __name__ == "__main__":
             optimal_thresholds.append(0.5)  # Valeur par défaut
 
     np.save('model_config_v2.npy', np.array(optimal_thresholds))
-    model.save('final_model_HUGEV3.keras')
+    model.save('final_model_HUGEV4.keras')
