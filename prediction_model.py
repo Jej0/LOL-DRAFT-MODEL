@@ -1,10 +1,11 @@
-import numpy as np
+
 import tensorflow as tf
 from difflib import get_close_matches
 from tensorflow.keras.models import load_model
 import numpy as np
 import tensorflow as tf
 import keras_cv
+import numpy as np
 # from tf_embedding import AttentionBlock
 from tf_embedding import AttentionBlock
 # Liste complète des champions avec leurs IDs et noms
@@ -213,7 +214,7 @@ class DraftAssistant:
     def load_model(self):
         try:
             return tf.keras.models.load_model(
-                'final_model_HUGEV3.keras',
+                'best_model_HUGEV4.keras',
                 custom_objects={
                     'AttentionBlock': AttentionBlock,
                     'FocalLoss': keras_cv.losses.FocalLoss

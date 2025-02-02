@@ -183,7 +183,7 @@ MASK_VALUE = len(CHAMPIONS)  # Valeur spéciale pour les slots vides
 
 
 
-API_KEY = "RGAPI-d7455060-a9ef-4919-abc8-96f8bc2d00g4"  # Remplacez par votre clé API
+API_KEY = "xxxx"  # Remplacez par votre clé API
 BASE_URLS = {
     "EUROPE": "https://europe.api.riotgames.com",
     "EUW1": "https://euw1.api.riotgames.com"
@@ -310,7 +310,7 @@ if __name__ == "__main__":
     
     # Récupérer les matches de la ligue Challenger
     challenger_league = requests.get(
-        f"{BASE_URLS['EUW1']}/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5",
+        f"{BASE_URLS['EUW1']}/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5",
         headers={"X-Riot-Token": API_KEY}
     ).json()
 
